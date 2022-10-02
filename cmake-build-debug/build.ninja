@@ -49,8 +49,26 @@ cmake_ninja_workdir = C$:/Users/Wang/CLionProjects/cs205_project2/cmake-build-de
 
 build cmake_object_order_depends_target_project2: phony || CMakeFiles/project2.dir
 
-build CMakeFiles/project2.dir/basic.cpp.obj: CXX_COMPILER__project2_Debug C$:/Users/Wang/CLionProjects/cs205_project2/basic.cpp || cmake_object_order_depends_target_project2
-  DEP_FILE = CMakeFiles\project2.dir\basic.cpp.obj.d
+build CMakeFiles/project2.dir/arithmetic.cpp.obj: CXX_COMPILER__project2_Debug C$:/Users/Wang/CLionProjects/cs205_project2/arithmetic.cpp || cmake_object_order_depends_target_project2
+  DEP_FILE = CMakeFiles\project2.dir\arithmetic.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  OBJECT_DIR = CMakeFiles\project2.dir
+  OBJECT_FILE_DIR = CMakeFiles\project2.dir
+
+build CMakeFiles/project2.dir/calculation.cpp.obj: CXX_COMPILER__project2_Debug C$:/Users/Wang/CLionProjects/cs205_project2/calculation.cpp || cmake_object_order_depends_target_project2
+  DEP_FILE = CMakeFiles\project2.dir\calculation.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  OBJECT_DIR = CMakeFiles\project2.dir
+  OBJECT_FILE_DIR = CMakeFiles\project2.dir
+
+build CMakeFiles/project2.dir/main.cpp.obj: CXX_COMPILER__project2_Debug C$:/Users/Wang/CLionProjects/cs205_project2/main.cpp || cmake_object_order_depends_target_project2
+  DEP_FILE = CMakeFiles\project2.dir\main.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  OBJECT_DIR = CMakeFiles\project2.dir
+  OBJECT_FILE_DIR = CMakeFiles\project2.dir
+
+build CMakeFiles/project2.dir/test.cpp.obj: CXX_COMPILER__project2_Debug C$:/Users/Wang/CLionProjects/cs205_project2/test.cpp || cmake_object_order_depends_target_project2
+  DEP_FILE = CMakeFiles\project2.dir\test.cpp.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\project2.dir
   OBJECT_FILE_DIR = CMakeFiles\project2.dir
@@ -63,7 +81,7 @@ build CMakeFiles/project2.dir/basic.cpp.obj: CXX_COMPILER__project2_Debug C$:/Us
 #############################################
 # Link the executable project2.exe
 
-build project2.exe: CXX_EXECUTABLE_LINKER__project2_Debug CMakeFiles/project2.dir/basic.cpp.obj
+build project2.exe: CXX_EXECUTABLE_LINKER__project2_Debug CMakeFiles/project2.dir/arithmetic.cpp.obj CMakeFiles/project2.dir/calculation.cpp.obj CMakeFiles/project2.dir/main.cpp.obj CMakeFiles/project2.dir/test.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\project2.dir

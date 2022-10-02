@@ -1,5 +1,6 @@
-#include <iostream>
-#include <cstring>
+#include <string>
+#include "arithmetic.h"
+
 
 using namespace std;
 
@@ -51,6 +52,21 @@ int toIntStr(string &a) {
     return n;
 }
 
+string int_pls(string a, string b) {
+    int al = a.length();
+    int bl = b.length();
+    char c[40000] = {0};
+    for (int i = 0; i < al + bl; ++i) {
+        c[i] += (i >= al ? 0 : (a[i] - '0')) + (i >= bl ? 0 : (b[i] - '0'));
+        c[i + 1] += c[i] / 10;
+        c[i] %= 10;
+    }
+    for (int i = 0; i < al + bl; ++i) {
+        c[i] += '0';
+    }
+    return c;
+}
+
 string int_mul(string a, string b) {
     int al = a.length();
     int bl = b.length();
@@ -66,6 +82,22 @@ string int_mul(string a, string b) {
     for (int i = 0; i < al + bl; ++i) {
         c[i] += '0';
     }
+    return c;
+}
+
+string pls(string a, string b) {
+    reverseStr(a);
+    reverseStr(b);
+    string c = int_pls(a, b);
+    int cl = 0;
+    for (int i = a.length() + b.length() - 1; i >= 0; --i) {
+        if (c[i] != '0') {
+            cl = i + 1;
+            break;
+        }
+    }
+    c = c.substr(0, cl);
+    reverseStr(c);
     return c;
 }
 
@@ -139,12 +171,6 @@ string mul(string a, string b) {
     } else {
         return result;
     }
-}
-
-int main() {
-    string a, b;
-    cin >> a >> b;
-    cout << mul(a, b);
 }
 
 
