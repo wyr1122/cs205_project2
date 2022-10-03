@@ -40,7 +40,7 @@ string cal(string s) {
     }
     for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '*') {
-            string result = mul(s.substr(0, i), cal(s.substr(i + 1)));
+            string result = mul(cal(s.substr(0, i)), cal(s.substr(i + 1)));
             return result;
         }
     }

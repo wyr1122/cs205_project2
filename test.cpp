@@ -13,4 +13,8 @@ int main() {
     char a[40000];
     cin.getline(a, 40000);
     cout << cal(a);
+//    string a, b;
+//    cin >> a >> b;
+//    cout << mul(a, b);
+//    return 0;
 }

@@ -40,6 +40,40 @@ int dealWithE(string &a) {
     }
 }
 
+void addPoint(string &c, int cl, int cn) {
+    if (cn > 0) {
+        if (cl - cn > 0) {
+            c = c.insert(cl - cn, ".");
+        } else {
+            char bw[40000] = {0};
+            for (int i = 0; i < cn - cl + 2; ++i) {
+                if (i == 1) {
+                    bw[i] = '.';
+                } else {
+                    bw[i] = '0';
+                }
+            }
+            c = bw + c;
+        }
+        for (int i = c.length() - 1; i >= 0; --i) {
+            if (c[i] == '0') {
+                c.erase(i, 1);
+            } else if (c[i] == '.') {
+                c = c.substr(0, i);
+                break;
+            } else {
+                break;
+            }
+        }
+    } else if (cn < 0) {
+        char bw[40000] = {0};
+        for (int i = 0; i < -cn; ++i) {
+            bw[i] = '0';
+        }
+        c.append(bw);
+    }
+}
+
 int toIntStr(string &a) {
     int n = 0;
     for (int i = 0; i < a.length(); ++i) {
@@ -88,6 +122,16 @@ string int_mul(string a, string b) {
 string pls(string a, string b) {
     reverseStr(a);
     reverseStr(b);
+    int an = toIntStr(a);
+    int bn = toIntStr(b);
+    int n = max(an, bn);
+    if (an > bn) {
+        string bw = string(an - bn, '0');
+        b = bw.append(b);
+    } else if (bn > an) {
+        string bw = string(bn - an, '0');
+        a = bw.append(a);
+    }
     string c = int_pls(a, b);
     int cl = 0;
     for (int i = a.length() + b.length() - 1; i >= 0; --i) {
@@ -98,6 +142,7 @@ string pls(string a, string b) {
     }
     c = c.substr(0, cl);
     reverseStr(c);
+    addPoint(c, cl, n);
     return c;
 }
 
@@ -123,9 +168,9 @@ string mul(string a, string b) {
             break;
         }
     }
+
     c = c.substr(0, cl);
     reverseStr(c);
-    string result = c.substr(0);
 
     if (cn - cl - ce > 5 || cl - cn + ce > 5) {
         ce += cl - cn - 1;
@@ -134,42 +179,11 @@ string mul(string a, string b) {
         cn -= ce;
         ce = 0;
     }
-
-    if (cn > 0) {
-        if (cl - cn > 0) {
-            result = result.substr(0, cl - cn) + "." + c.substr(cl - cn);
-        } else {
-            char bw[40000] = {0};
-            for (int i = 0; i < cn - cl + 2; ++i) {
-                if (i == 1) {
-                    bw[i] = '.';
-                } else {
-                    bw[i] = '0';
-                }
-            }
-            result = bw + result;
-        }
-        for (int i = result.length() - 1; i >= 0; --i) {
-            if (result[i] == '0') {
-                result.erase(i, 1);
-            } else if (result[i] == '.') {
-                result = result.substr(0, i);
-                break;
-            } else {
-                break;
-            }
-        }
-    } else if (cn < 0) {
-        char bw[40000] = {0};
-        for (int i = 0; i < -cn; ++i) {
-            bw[i] = '0';
-        }
-        result.append(bw);
-    }
+    addPoint(c, cl, cn);
     if (ce != 0) {
-        return result + "e" + to_string(ce);
+        return c + "e" + to_string(ce);
     } else {
-        return result;
+        return c;
     }
 }
 
