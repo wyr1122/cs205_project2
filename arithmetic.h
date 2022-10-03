@@ -12,3 +12,5 @@ using namespace std;
 string mul(string, string);
 
 string pls(string, string);
+
+string mns(string, string);

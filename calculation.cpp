@@ -38,6 +38,12 @@ string cal(string s) {
             return result;
         }
     }
+    for (int i = 1; i < s.length(); ++i) {
+        if (s[i] == '-') {
+            string result = mns(cal(s.substr(0, i)), cal(s.substr(i + 1)));
+            return result;
+        }
+    }
     for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '*') {
             string result = mul(cal(s.substr(0, i)), cal(s.substr(i + 1)));
