@@ -10,3 +10,5 @@
 using namespace std;
 
 string cal(string);
+
+void substitute(string &, char [][10], char [][100], int);

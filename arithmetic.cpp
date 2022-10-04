@@ -86,8 +86,7 @@ int toIntStr(string &a) {
 }
 
 void align(string &a, string &b, int an, int bn) {
-    int al = a.length();
-    int bl = b.length();
+
     if (an > bn) {
         string bw = string(an - bn, '0');
         b = bw.append(b);
@@ -95,6 +94,8 @@ void align(string &a, string &b, int an, int bn) {
         string bw = string(bn - an, '0');
         a = bw.append(a);
     }
+    int al = a.length();
+    int bl = b.length();
     if (al > bl) {
         b.append(string(al - bl, '0'));
     } else if (bl > al) {
@@ -105,7 +106,7 @@ void align(string &a, string &b, int an, int bn) {
 string int_pls(string a, string b) {
     int al = a.length();
     int cl = al + 1;
-    char c[cl];
+    char c[cl + 1];
     memset(c, 0, cl);
     for (int i = 0; i < al; ++i) {
         c[i] += (a[i] - '0') + (b[i] - '0');
@@ -115,13 +116,14 @@ string int_pls(string a, string b) {
     for (int i = 0; i < cl; ++i) {
         c[i] += '0';
     }
+    c[cl] = 0;
     return c;
 }
 
 string int_mns(string a, string b) {
     int al = a.length();
     int cl = al + 2;
-    char c[cl];
+    char c[cl + 1];
     memset(c, 0, cl);
     bool neg = false;
     for (int i = 0; i < al; ++i) {
@@ -148,13 +150,14 @@ string int_mns(string a, string b) {
     } else {
         c[cl - 1] = 0;
     }
+    c[cl] = 0;
     return c;
 }
 
 string int_mul(string a, string b) {
     int al = a.length();
     int bl = b.length();
-    char c[al + bl];
+    char c[al + bl + 1];
     memset(c, 0, al + bl);
     for (int i = 0; i < al; ++i) {
         for (int j = 0; j < bl; ++j) {
@@ -166,6 +169,7 @@ string int_mul(string a, string b) {
     for (int i = 0; i < al + bl; ++i) {
         c[i] += '0';
     }
+    c[al + bl] = 0;
     return c;
 }
 

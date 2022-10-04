@@ -7,9 +7,20 @@
 
 using namespace std;
 
+void substitute(string &s, char name[][10], char value[][100], int n) {
+    for (int i = 0; i < n; ++i) {
+        string nameStr = string(name[i]);
+        while (s.find(nameStr) != string::npos) {
+            int m = s.find(nameStr);
+            s.replace(m, nameStr.length(), value[i]);
+        }
+    }
+}
+
 string cal(string s) {
     s.erase(0, s.find_first_not_of(" "));
     s.erase(s.find_last_not_of(" ") + 1);
+
     int left;
     int cnt = 0;
     for (int i = 0; i < s.length(); ++i) {
