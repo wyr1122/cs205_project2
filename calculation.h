@@ -8,7 +8,10 @@
 #endif //PROJECT2_CALCULATION_H
 
 using namespace std;
+const int kVariableNum = 50;
+const int kVariableNameLimit = 10;
+const int kLineLimit = 100;
 
 string Calculate(string s);
 
-void Substitute(string &s, char (*name)[10], char (*value)[100], int n);
+void Substitute(string &s, char (*name)[kVariableNameLimit], char (*value)[kLineLimit], int n);

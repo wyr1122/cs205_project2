@@ -8,15 +8,15 @@
 using namespace std;
 
 bool IsValid(string &s) {
-    for (int i = 0; i < s.length(); ++i) {
-        if (s[i] > '9' && s[i] != 'e' || s[i] < '0' && s[i] != '.' && s[i] != '-') {
+    for (char i : s) {
+        if (i > '9' && i != 'e' || i < '0' && i != '.' && i != '-') {
             return false;
         }
     }
     return true;
 }
 
-void Substitute(string &s, char name[][10], char value[][100], int n) {
+void Substitute(string &s, char name[kVariableNum][kVariableNameLimit], char value[kVariableNum][kLineLimit], int n) {
     for (int i = 0; i < n; ++i) {
         string name_str = string(name[i]);
         while (s.find(name_str) != string::npos) {

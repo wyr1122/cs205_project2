@@ -11,19 +11,19 @@
 using namespace std;
 
 int main() {
-    const int kVariableNum = 50;
-    char str[101] = {0};
+    char str[kLineLimit];
+    cout << str << endl;
     string s, result;
-    char name[kVariableNum][10] = {0};
-    char value[kVariableNum][100] = {0};
+    char name[kVariableNum][kVariableNameLimit] = {0};
+    char value[kVariableNum][kLineLimit] = {0};
     int cnt = 0;
     while (cnt < kVariableNum) {
-        cin.getline(str, 100);
+        cin.getline(str, kLineLimit);
         s = string(str);
         int m = s.find('=');
         if (m != string::npos) {
             strncpy(name[cnt], str, m);
-            strncpy(value[cnt], &str[m + 1], 99 - m);
+            strcpy(value[cnt], &str[m + 1]);
             cnt++;
         } else {
             Substitute(s, name, value, cnt);
