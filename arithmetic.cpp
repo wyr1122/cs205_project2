@@ -86,7 +86,6 @@ int ToIntStr(string &a) {
 }
 
 void Align(string &a, string &b, int an, int bn) {
-
     if (an > bn) {
         string bw = string(an - bn, '0');
         b = bw.append(b);
@@ -103,7 +102,7 @@ void Align(string &a, string &b, int an, int bn) {
     }
 }
 
-string Int_pls(string a, string b) {
+string IntPls(string a, string b) {
     int al = a.length();
     int cl = al + 1;
     char c[cl + 1];
@@ -120,13 +119,13 @@ string Int_pls(string a, string b) {
     return c;
 }
 
-string Int_mns(string a, string b) {
+string IntMns(string a, string b) {
     int al = a.length();
     int cl = al + 2;
     char c[cl + 1];
-    memset(c, 0, cl);
+    memset(c, 0, cl + 1);
     bool neg = false;
-    for (int i = 0; i < al; ++i) {
+    for (int i = al - 1; i >= 0; --i) {
         if (a[i] > b[i]) {
             break;
         } else if (a[i] < b[i]) {
@@ -154,7 +153,44 @@ string Int_mns(string a, string b) {
     return c;
 }
 
-string Int_mul(string a, string b) {
+string MnsForDiv(string a, string b) {
+    ReverseStr(a);
+    ReverseStr(b);
+    Align(a, b, 0, 0);
+    int cl = a.length();
+    char c[cl + 1];
+    memset(c, 0, cl + 1);
+    for (int i = cl - 1; i >= 0; --i) {
+        if (a[i] > b[i]) {
+            break;
+        } else if (a[i] < b[i]) {
+            return "";
+        }
+    }
+    for (int i = 0; i < cl; ++i) {
+        c[i] += 10 + (a[i] - '0') - (b[i] - '0');
+        c[i + 1] += c[i] / 10 - 1;
+        c[i] %= 10;
+    }
+    for (int i = 0; i < cl; ++i) {
+        c[i] += '0';
+    }
+    c[cl] = 0;
+    string result = string(c);
+    int len = 1;
+    for (int i = result.length() - 1; i >= 0; --i) {
+        if (result[i] != '0') {
+            len = i + 1;
+            break;
+        }
+    }
+    result = result.substr(0, len);
+    ReverseStr(result);
+    return result;
+}
+
+
+string IntMul(string a, string b) {
     int al = a.length();
     int bl = b.length();
     char c[al + bl + 1];
@@ -172,6 +208,33 @@ string Int_mul(string a, string b) {
     c[al + bl] = 0;
     return c;
 }
+
+string ToReciprocal(string a, int n) {
+    n += 2;
+    string one = string("1");
+    one.append(n, '0');
+    int len = 1;
+    string remainder;
+    string result = string("");
+    while (len <= one.length()) {
+        int bit = 0;
+        for (int i = 0; i < 10; ++i) {
+            remainder = MnsForDiv(one.substr(0, len), a);
+            if (!remainder.empty()) {
+                bit++;
+                one.replace(0, len, remainder);
+                len = remainder.length();
+            } else {
+                len++;
+                result.append(to_string(bit));
+                break;
+            }
+        }
+    }
+    result.insert(1, ".");
+    return result;
+}
+
 
 string Pls(string a, string b) {
     ReverseStr(a);
@@ -191,14 +254,14 @@ string Pls(string a, string b) {
     bool neg = false;
     string c;
     if (aNeg && bNeg) {
-        c = Int_pls(a, b);
+        c = IntPls(a, b);
         c.append("-");
     } else if (bNeg) {
-        c = Int_mns(a, b);
+        c = IntMns(a, b);
     } else if (aNeg) {
-        c = Int_mns(b, a);
+        c = IntMns(b, a);
     } else {
-        c = Int_pls(a, b);
+        c = IntPls(a, b);
     }
     if (IsZero(c)) {
         return "0";
@@ -249,7 +312,7 @@ string Mul(string a, string b) {
         return "0";
     }
     int cn = an + bn;
-    string c = Int_mul(a, b);
+    string c = IntMul(a, b);
     int cl = 0;
     for (int i = c.length() - 1; i >= 0; --i) {
         if (c[i] != '0') {

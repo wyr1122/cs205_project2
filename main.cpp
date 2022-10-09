@@ -12,7 +12,6 @@ using namespace std;
 
 int main() {
     char str[kLineLimit];
-    cout << str << endl;
     string s, result;
     char name[kVariableNum][kVariableNameLimit] = {0};
     char value[kVariableNum][kLineLimit] = {0};
