@@ -9,6 +9,6 @@
 
 using namespace std;
 
-string cal(string);
+string Calculate(string s);
 
-void substitute(string &, char [][10], char [][100], int);
+void Substitute(string &s, char (*name)[10], char (*value)[100], int n);

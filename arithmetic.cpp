@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void reverseStr(string &a) {
+void ReverseStr(string &a) {
     char temp;
     for (int i = 0; i < a.length() / 2; ++i) {
         temp = a[i];
@@ -14,7 +14,7 @@ void reverseStr(string &a) {
     }
 }
 
-bool isZero(string a) {
+bool IsZero(string a) {
     for (int i = 0; i < a.length(); ++i) {
         if (a[i] != '0') {
             return false;
@@ -23,7 +23,7 @@ bool isZero(string a) {
     return true;
 }
 
-int dealWithE(string &a) {
+int DealWithE(string &a) {
     int n = 0;
     for (int i = 0; i < a.length(); ++i) {
         if (a[i] == 'e') {
@@ -34,14 +34,14 @@ int dealWithE(string &a) {
     if (n > 0) {
         string result = a.substr(0, n);
         a = a.substr(n + 1);
-        reverseStr(result);
+        ReverseStr(result);
         return stoi(result);
     } else {
         return 0;
     }
 }
 
-void addPoint(string &c, int cl, int cn) {
+void AddPoint(string &c, int cl, int cn) {
     if (cn > 0) {
         if (cl - cn > 0) {
             c = c.insert(cl - cn, ".");
@@ -73,7 +73,7 @@ void addPoint(string &c, int cl, int cn) {
     }
 }
 
-int toIntStr(string &a) {
+int ToIntStr(string &a) {
     int n = 0;
     for (int i = 0; i < a.length(); ++i) {
         if (a[i] == '.') {
@@ -85,7 +85,7 @@ int toIntStr(string &a) {
     return n;
 }
 
-void align(string &a, string &b, int an, int bn) {
+void Align(string &a, string &b, int an, int bn) {
 
     if (an > bn) {
         string bw = string(an - bn, '0');
@@ -103,7 +103,7 @@ void align(string &a, string &b, int an, int bn) {
     }
 }
 
-string int_pls(string a, string b) {
+string Int_pls(string a, string b) {
     int al = a.length();
     int cl = al + 1;
     char c[cl + 1];
@@ -120,7 +120,7 @@ string int_pls(string a, string b) {
     return c;
 }
 
-string int_mns(string a, string b) {
+string Int_mns(string a, string b) {
     int al = a.length();
     int cl = al + 2;
     char c[cl + 1];
@@ -154,7 +154,7 @@ string int_mns(string a, string b) {
     return c;
 }
 
-string int_mul(string a, string b) {
+string Int_mul(string a, string b) {
     int al = a.length();
     int bl = b.length();
     char c[al + bl + 1];
@@ -173,9 +173,9 @@ string int_mul(string a, string b) {
     return c;
 }
 
-string pls(string a, string b) {
-    reverseStr(a);
-    reverseStr(b);
+string Pls(string a, string b) {
+    ReverseStr(a);
+    ReverseStr(b);
     int al = a.length();
     int bl = b.length();
     bool aNeg = a[al - 1] == '-';
@@ -184,23 +184,23 @@ string pls(string a, string b) {
         a.erase(al - 1, 1);
     if (bNeg)
         b.erase(bl - 1, 1);
-    int an = toIntStr(a);
-    int bn = toIntStr(b);
+    int an = ToIntStr(a);
+    int bn = ToIntStr(b);
     int n = max(an, bn);
-    align(a, b, an, bn);
+    Align(a, b, an, bn);
     bool neg = false;
     string c;
     if (aNeg && bNeg) {
-        c = int_pls(a, b);
+        c = Int_pls(a, b);
         c.append("-");
     } else if (bNeg) {
-        c = int_mns(a, b);
+        c = Int_mns(a, b);
     } else if (aNeg) {
-        c = int_mns(b, a);
+        c = Int_mns(b, a);
     } else {
-        c = int_pls(a, b);
+        c = Int_pls(a, b);
     }
-    if (isZero(c)) {
+    if (IsZero(c)) {
         return "0";
     }
     int cl = 0;
@@ -213,43 +213,43 @@ string pls(string a, string b) {
         }
     }
     c = c.substr(0, cl);
-    reverseStr(c);
-    addPoint(c, cl, n);
+    ReverseStr(c);
+    AddPoint(c, cl, n);
     if (neg) {
         c.insert(0, "-");
     }
     return c;
 }
 
-string mns(string a, string b) {
+string Mns(string a, string b) {
     if (b[0] == '-') {
         b.erase(0, 1);
     } else {
         b.insert(0, "-");
     }
-    return pls(a, b);
+    return Pls(a, b);
 }
 
 
-string mul(string a, string b) {
-    reverseStr(a);
-    reverseStr(b);
-    bool aNeg = a[a.length() - 1] == '-';
-    bool bNeg = b[b.length() - 1] == '-';
-    if (aNeg)
+string Mul(string a, string b) {
+    ReverseStr(a);
+    ReverseStr(b);
+    bool a_neg = a[a.length() - 1] == '-';
+    bool b_neg = b[b.length() - 1] == '-';
+    if (a_neg)
         a.erase(a.length() - 1, 1);
-    if (bNeg)
+    if (b_neg)
         b.erase(b.length() - 1, 1);
-    int ae = dealWithE(a);
-    int be = dealWithE(b);
+    int ae = DealWithE(a);
+    int be = DealWithE(b);
     int ce = ae + be;
-    int an = toIntStr(a);
-    int bn = toIntStr(b);
-    if (isZero(a) || isZero(b)) {
+    int an = ToIntStr(a);
+    int bn = ToIntStr(b);
+    if (IsZero(a) || IsZero(b)) {
         return "0";
     }
     int cn = an + bn;
-    string c = int_mul(a, b);
+    string c = Int_mul(a, b);
     int cl = 0;
     for (int i = c.length() - 1; i >= 0; --i) {
         if (c[i] != '0') {
@@ -258,7 +258,7 @@ string mul(string a, string b) {
         }
     }
     c = c.substr(0, cl);
-    reverseStr(c);
+    ReverseStr(c);
     if (cn - cl - ce > 5 || cl - cn + ce > 5) {
         ce += cl - cn - 1;
         cn = cl - 1;
@@ -266,8 +266,8 @@ string mul(string a, string b) {
         cn -= ce;
         ce = 0;
     }
-    addPoint(c, cl, cn);
-    if (aNeg && !bNeg || !aNeg && bNeg) {
+    AddPoint(c, cl, cn);
+    if (a_neg && !b_neg || !a_neg && b_neg) {
         c.insert(0, "-");
     }
     if (ce != 0) {
@@ -276,7 +276,3 @@ string mul(string a, string b) {
         return c;
     }
 }
-
-
-
-

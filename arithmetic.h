@@ -9,8 +9,8 @@
 
 using namespace std;
 
-string mul(string, string);
+string Mul(string a, string b);
 
-string pls(string, string);
+string Pls(string a, string b);
 
-string mns(string, string);
+string Mns(string a, string b);
