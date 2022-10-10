@@ -8,9 +8,9 @@
 #endif //PROJECT2_CALCULATION_H
 
 using namespace std;
-const int kVariableNum = 50;
-const int kVariableNameLimit = 10;
-const int kLineLimit = 100;
+const int kVariableNum = 51;
+const int kVariableNameLimit = 11;
+const int kLineLimit = 101;
 
 string Calculate(string s, char (*name)[kVariableNameLimit], char (*value)[kLineLimit], int n);
 

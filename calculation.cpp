@@ -19,6 +19,9 @@ bool IsValid(string &s) {
 string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char value[kVariableNum][kLineLimit], int n) {
     s.erase(0, s.find_first_not_of(" "));
     s.erase(s.find_last_not_of(" ") + 1);
+    if (s.empty()) {
+        return s;
+    }
     int left;
     int cnt = 0;
     for (int i = 0; i < s.length(); ++i) {
@@ -41,11 +44,18 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
             }
         }
     }
+
     int m = s.find("--");
     while (m != string::npos) {
-        s.erase(m, 2);
-        m = s.find("--");
+        if (m == 0) {
+            s.erase(0, 2);
+            m = s.find("--");
+        } else {
+            s.replace(m, 2, "+");
+            m = s.find("--");
+        }
     }
+
     for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '+') {
             string s1 = Calculate(s.substr(0, i), name, value, n);
