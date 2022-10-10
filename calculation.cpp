@@ -8,7 +8,7 @@
 using namespace std;
 
 bool IsValid(string &s) {
-    for (char i : s) {
+    for (char i: s) {
         if (i > '9' && i != 'e' || i < '0' && i != '.' && i != '-') {
             return false;
         }
@@ -16,17 +16,7 @@ bool IsValid(string &s) {
     return true;
 }
 
-void Substitute(string &s, char name[kVariableNum][kVariableNameLimit], char value[kVariableNum][kLineLimit], int n) {
-    for (int i = 0; i < n; ++i) {
-        string name_str = string(name[i]);
-        while (s.find(name_str) != string::npos) {
-            int m = s.find(name_str);
-            s.replace(m, name_str.length(), value[i]);
-        }
-    }
-}
-
-string Calculate(string s) {
+string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char value[kVariableNum][kLineLimit], int n) {
     s.erase(0, s.find_first_not_of(" "));
     s.erase(s.find_last_not_of(" ") + 1);
 
@@ -44,7 +34,7 @@ string Calculate(string s) {
             }
             if (s[i] == ')') {
                 cnt = 0;
-                s.replace(left, i - left + 1, Calculate(s.substr(left + 1, i - left - 1)));
+                s.replace(left, i - left + 1, Calculate(s.substr(left + 1, i - left - 1), name, value, n));
             }
         } else {
             if (s[i] == ')') {
@@ -54,10 +44,10 @@ string Calculate(string s) {
     }
     for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '+') {
-            string s1 = Calculate(s.substr(0, i));
-            string s2 = Calculate(s.substr(i + 1));
-            if (s1.empty() || s2.empty()) {
-                return "";
+            string s1 = Calculate(s.substr(0, i), name, value, n);
+            string s2 = Calculate(s.substr(i + 1), name, value, n);
+            if (s1[0] == 'E' || s2[0] == 'E') {
+                return "E";
             } else {
                 return Pls(s1, s2);
             }
@@ -65,10 +55,10 @@ string Calculate(string s) {
     }
     for (int i = 1; i < s.length(); ++i) {
         if (s[i] == '-') {
-            string s1 = Calculate(s.substr(0, i));
-            string s2 = Calculate(s.substr(i + 1));
-            if (s1.empty() || s2.empty()) {
-                return "";
+            string s1 = Calculate(s.substr(0, i), name, value, n);
+            string s2 = Calculate(s.substr(i + 1), name, value, n);
+            if (s1[0] == 'E' || s2[0] == 'E') {
+                return "E";
             } else {
                 return Mns(s1, s2);
             }
@@ -76,18 +66,23 @@ string Calculate(string s) {
     }
     for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '*') {
-            string s1 = Calculate(s.substr(0, i));
-            string s2 = Calculate(s.substr(i + 1));
-            if (s1.empty() || s2.empty()) {
+            string s1 = Calculate(s.substr(0, i), name, value, n);
+            string s2 = Calculate(s.substr(i + 1), name, value, n);
+            if (s1[0] == 'E' || s2[0] == 'E') {
                 return "";
             } else {
                 return Mul(s1, s2);
             }
         }
     }
+    for (int i = 0; i < n; ++i) {
+        if (std::equal(s.begin(), s.end(), name[i])) {
+            return value[i];
+        }
+    }
     if (IsValid(s)) {
         return s;
     } else {
-        return "";
+        return "E";
     }
 }

@@ -25,9 +25,8 @@ int main() {
             strcpy(value[cnt], &str[m + 1]);
             cnt++;
         } else {
-            Substitute(s, name, value, cnt);
-            result = Calculate(s);
-            if (result.empty()) {
+            result = Calculate(s, name, value, cnt);
+            if (result[0] == 'E') {
                 cout << "input is invalid!" << endl;
             } else {
                 cout << result << endl;

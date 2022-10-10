@@ -12,6 +12,5 @@ const int kVariableNum = 50;
 const int kVariableNameLimit = 10;
 const int kLineLimit = 100;
 
-string Calculate(string s);
+string Calculate(string s, char (*name)[kVariableNameLimit], char (*value)[kLineLimit], int n);
 
-void Substitute(string &s, char (*name)[kVariableNameLimit], char (*value)[kLineLimit], int n);
