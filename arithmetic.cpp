@@ -231,7 +231,9 @@ string ToReciprocal(string a, int n) {
             }
         }
     }
-    result.insert(1, ".");
+    if (result.length() > 1) {
+        result.insert(1, ".");
+    }
     return result;
 }
 
@@ -293,7 +295,6 @@ string Mns(string a, string b) {
     return Pls(a, b);
 }
 
-
 string Mul(string a, string b) {
     ReverseStr(a);
     ReverseStr(b);
@@ -338,4 +339,32 @@ string Mul(string a, string b) {
     } else {
         return c;
     }
+}
+
+string Div(string a, string b) {
+    string a_cpy = string(a);
+    ReverseStr(a);
+    ReverseStr(b);
+    bool a_neg = a[a.length() - 1] == '-';
+    bool b_neg = b[b.length() - 1] == '-';
+    if (b_neg)
+        b.erase(b.length() - 1, 1);
+    if (!a_neg && b_neg) {
+        a_cpy.insert(0, "-");
+    } else if (a_neg && b_neg) {
+        a_cpy.erase(0, 1);
+    }
+    int be = DealWithE(b);
+    int an = ToIntStr(a);
+    int bn = ToIntStr(b);
+    be -= bn;
+    if (IsZero(b)) {
+        return "E";
+    } else if (IsZero(a)) {
+        return "0";
+    }
+    ReverseStr(b);
+    string reciprocal = ToReciprocal(b, an);
+    reciprocal.append("e").append(to_string(-be));
+    return Mul(a_cpy, reciprocal);
 }

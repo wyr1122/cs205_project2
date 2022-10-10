@@ -46,7 +46,7 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
         if (s[i] == '+') {
             string s1 = Calculate(s.substr(0, i), name, value, n);
             string s2 = Calculate(s.substr(i + 1), name, value, n);
-            if (s1[0] == 'E' || s2[0] == 'E') {
+            if (s1[0] == 'E' || s2[0] == 'E' || s1.empty() || s2.empty()) {
                 return "E";
             } else {
                 return Pls(s1, s2);
@@ -55,12 +55,28 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
     }
     for (int i = 1; i < s.length(); ++i) {
         if (s[i] == '-') {
+            if (s[i + 1] == '-' && s[i + 2] == '-') {
+                return "E";
+            }
+            if (s[i - 1] != '*' && s[i - 1] != '/') {
+                string s1 = Calculate(s.substr(0, i), name, value, n);
+                string s2 = Calculate(s.substr(i + 1), name, value, n);
+                if (s1[0] == 'E' || s2[0] == 'E' || s2.empty()) {
+                    return "E";
+                } else {
+                    return Mns(s1, s2);
+                }
+            }
+        }
+    }
+    for (int i = 0; i < s.length(); ++i) {
+        if (s[i] == '/') {
             string s1 = Calculate(s.substr(0, i), name, value, n);
             string s2 = Calculate(s.substr(i + 1), name, value, n);
-            if (s1[0] == 'E' || s2[0] == 'E') {
+            if (s1[0] == 'E' || s2[0] == 'E' || s1.empty() || s2.empty()) {
                 return "E";
             } else {
-                return Mns(s1, s2);
+                return Div(s1, s2);
             }
         }
     }
@@ -68,8 +84,8 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
         if (s[i] == '*') {
             string s1 = Calculate(s.substr(0, i), name, value, n);
             string s2 = Calculate(s.substr(i + 1), name, value, n);
-            if (s1[0] == 'E' || s2[0] == 'E') {
-                return "";
+            if (s1[0] == 'E' || s2[0] == 'E' || s1.empty() || s2.empty()) {
+                return "E";
             } else {
                 return Mul(s1, s2);
             }
