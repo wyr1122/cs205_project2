@@ -209,20 +209,17 @@ string IntMul(string a, string b) {
     return c;
 }
 
-string ToReciprocal(string a, int n) {
-    n += 2;
-    string one = string("1");
-    one.append(n, '0');
+string IntDiv(string b, string a) {
     int len = 1;
     string remainder;
     string result = string("");
-    while (len <= one.length()) {
+    while (len <= b.length()) {
         int bit = 0;
         for (int i = 0; i < 10; ++i) {
-            remainder = MnsForDiv(one.substr(0, len), a);
+            remainder = MnsForDiv(b.substr(0, len), a);
             if (!remainder.empty()) {
                 bit++;
-                one.replace(0, len, remainder);
+                b.replace(0, len, remainder);
                 len = remainder.length();
             } else {
                 len++;
@@ -231,12 +228,8 @@ string ToReciprocal(string a, int n) {
             }
         }
     }
-    if (result.length() > 1) {
-        result.insert(1, ".");
-    }
     return result;
 }
-
 
 string Pls(string a, string b) {
     ReverseStr(a);
@@ -314,6 +307,7 @@ string Mul(string a, string b) {
     }
     int cn = an + bn;
     string c = IntMul(a, b);
+
     int cl = 0;
     for (int i = c.length() - 1; i >= 0; --i) {
         if (c[i] != '0') {
@@ -342,7 +336,6 @@ string Mul(string a, string b) {
 }
 
 string Div(string a, string b) {
-    string a_cpy = string(a);
     ReverseStr(a);
     ReverseStr(b);
     bool a_neg = a[a.length() - 1] == '-';
@@ -350,21 +343,61 @@ string Div(string a, string b) {
     if (b_neg)
         b.erase(b.length() - 1, 1);
     if (!a_neg && b_neg) {
-        a_cpy.insert(0, "-");
+        a.insert(0, "-");
     } else if (a_neg && b_neg) {
-        a_cpy.erase(0, 1);
+        a.erase(0, 1);
     }
+    int ae = DealWithE(a);
     int be = DealWithE(b);
     int an = ToIntStr(a);
-    int bn = ToIntStr(b);
+    int bn = 0;
+    while (!b.empty()) {
+        if (b[0] == '0') {
+            b.erase(0, 1);
+            bn++;
+        } else if (b[0] == '.') {
+            b.erase(0, 1);
+            break;
+        } else {
+            break;
+        }
+    }
+    be += bn;
+    bn += ToIntStr(b);
     be -= bn;
+    int cn = bn;
+    int ce = ae - be;
     if (IsZero(b)) {
         return "E";
     } else if (IsZero(a)) {
         return "0";
     }
+    ReverseStr(a);
+    if (an < bn) {
+        a.append(bn - an, '0');
+    }
     ReverseStr(b);
-    string reciprocal = ToReciprocal(b, an);
-    reciprocal.append("e").append(to_string(-be));
-    return Mul(a_cpy, reciprocal);
+    string c = IntDiv(a, b);
+    int cl = 0;
+    for (int i = 0; i < c.length(); ++i) {
+        if (c[i] != '0') {
+            cl = i;
+            break;
+        }
+    }
+    c = c.substr(cl);
+    cl = c.length();
+    if (cn - cl - ce > 5 || cl - cn + ce > 5) {
+        ce += cl - cn - 1;
+        cn = cl - 1;
+    } else {
+        cn -= ce;
+        ce = 0;
+    }
+    AddPoint(c, cl, cn);
+    if (ce != 0) {
+        return c + "e" + to_string(ce);
+    } else {
+        return c;
+    }
 }

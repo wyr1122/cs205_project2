@@ -28,28 +28,36 @@ int main() {
                 if (m < kVariableNameLimit) {
                     bool change = false;
                     char name[kVariableNameLimit] = {0};
+                    string value;
                     strncpy(name, str, m);
-                    for (int i = 0; i < cnt; ++i) {
-                        if (strcmp(names[i], name) == 0) {
-                            strcpy(values[i], &str[m + 1]);
-                            cout << "variable " << names[i] << " changed successfully (" << cnt << "/"
+                    value = Calculate(string(&str[m + 1]), {}, {}, 0);
+                    if (value[0] == 'E' || value.empty()) {
+                        cout << "invalid expression" << endl;
+                    } else {
+                        for (int i = 0; i < cnt; ++i) {
+                            if (strcmp(names[i], name) == 0) {
+                                strcpy(values[i], value.c_str());
+                                cout << "variable " << names[i] << " changed to " << value << " successfully (" << cnt
+                                     << "/"
+                                     << kVariableNum - 1
+                                     << ")"
+                                     << endl;
+                                change = true;
+                                break;
+                            }
+                        }
+                        if (!change) {
+                            strcpy(names[cnt], name);
+                            strcpy(values[cnt], value.c_str());
+                            cout << "variable " << names[cnt] << " defined as " << value << " successfully (" << ++cnt
+                                 << "/"
                                  << kVariableNum - 1
                                  << ")"
                                  << endl;
-                            change = true;
-                            break;
                         }
                     }
-                    if (!change) {
-                        strcpy(names[cnt], name);
-                        strcpy(values[cnt], &str[m + 1]);
-                        cout << "variable " << names[cnt] << " defined successfully (" << ++cnt << "/"
-                             << kVariableNum - 1
-                             << ")"
-                             << endl;
-                    }
                 } else {
-                    cout << "variable name too long" << endl;
+                    cout << "variable name too long (" << m << "/" << kVariableNameLimit - 1 << ")" << endl;
                 }
             }
         } else {

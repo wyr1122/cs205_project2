@@ -9,10 +9,10 @@
 
 using namespace std;
 
-string Mul(string a, string b);
+string Mul(string, string);
 
-string Pls(string a, string b);
+string Pls(string, string);
 
-string Mns(string a, string b);
+string Mns(string, string);
 
-string Div(string a, string b);
+string Div(string, string);

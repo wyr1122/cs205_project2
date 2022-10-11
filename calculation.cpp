@@ -7,6 +7,7 @@
 
 using namespace std;
 
+//validity judgment has a lot of room for improvement
 bool IsValid(string &s) {
     for (char i: s) {
         if (i > '9' && i != 'e' || i < '0' && i != '.' && i != '-') {
