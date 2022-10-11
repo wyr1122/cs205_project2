@@ -16,8 +16,9 @@ int main() {
     char names[kVariableNum][kVariableNameLimit] = {0};
     char values[kVariableNum][kLineLimit] = {0};
     int cnt = 0;
+    cout << "hello" << endl;
     cin.getline(str, kLineLimit);
-    while (strcmp(str, "end") != 0) {
+    while (strcmp(str, "bye") != 0) {
         s = string(str);
         int m = s.find('=');
         if (m != string::npos) {
@@ -63,13 +64,13 @@ int main() {
         } else {
             result = Calculate(s, names, values, cnt);
             if (result[0] == 'E') {
-                cout << "input is invalid!" << endl;
+                cout << "invalid expression" << endl;
             } else {
                 cout << "result is " << result << endl;
             }
         }
         cin.getline(str, kLineLimit);
     }
-    cout << "end of program" << endl;
+    cout << "bye" << endl;
     return 0;
 }

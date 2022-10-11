@@ -82,17 +82,6 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
         }
     }
     for (int i = 0; i < s.length(); ++i) {
-        if (s[i] == '/') {
-            string s1 = Calculate(s.substr(0, i), name, value, n);
-            string s2 = Calculate(s.substr(i + 1), name, value, n);
-            if (s1[0] == 'E' || s2[0] == 'E' || s1.empty() || s2.empty()) {
-                return "E";
-            } else {
-                return Div(s1, s2);
-            }
-        }
-    }
-    for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '*') {
             string s1 = Calculate(s.substr(0, i), name, value, n);
             string s2 = Calculate(s.substr(i + 1), name, value, n);
@@ -100,6 +89,17 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
                 return "E";
             } else {
                 return Mul(s1, s2);
+            }
+        }
+    }
+    for (int i = s.length() - 1; i >= 0; --i) {
+        if (s[i] == '/') {
+            string s1 = Calculate(s.substr(0, i), name, value, n);
+            string s2 = Calculate(s.substr(i + 1), name, value, n);
+            if (s1[0] == 'E' || s2[0] == 'E' || s1.empty() || s2.empty()) {
+                return "E";
+            } else {
+                return Div(s1, s2);
             }
         }
     }
