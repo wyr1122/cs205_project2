@@ -18,6 +18,10 @@ int main() {
     cout << "hello" << endl;
     getline(cin, str);
     while (str != "bye") {
+        if (str.empty()) {
+            getline(cin, str);
+            continue;
+        }
         int m = str.find('=');
         if (m != string::npos) {
             if (cnt >= kVariableNum - 1) {
