@@ -8,7 +8,7 @@
 using namespace std;
 
 //validity judgment has a lot of room for improvement
-bool IsValid(string &s) {
+bool IsValidValue(string s) {
     for (char i: s) {
         if (i > '9' && i != 'e' || i < '0' && i != '.' && i != '-') {
             return false;
@@ -17,12 +17,26 @@ bool IsValid(string &s) {
     return true;
 }
 
+bool IsValidVariableName(string s) {
+    for (char i: s) {
+        if (!(i >= 'a' && i <= 'z' || i >= 'A' && i <= 'Z' || i == '_')) {
+            return false;
+        }
+    }
+    return true;
+}
+
+string sqrt(string s) {
+    return s;
+}
+
 string Calculate(string s, string names[], string values[], int n) {
     s.erase(0, s.find_first_not_of(" "));
     s.erase(s.find_last_not_of(" ") + 1);
     if (s.empty()) {
         return s;
     }
+    //Matching parentheses recursion
     int left;
     int cnt = 0;
     for (int i = 0; i < s.length(); ++i) {
@@ -45,18 +59,18 @@ string Calculate(string s, string names[], string values[], int n) {
             }
         }
     }
-
-    int m = s.find("--");
+    //Deal with minus
+    int m = s.rfind("--");
     while (m != string::npos) {
         if (m == 0) {
             s.erase(0, 2);
-            m = s.find("--");
+            m = s.rfind("--");
         } else {
             s.replace(m, 2, "+");
-            m = s.find("--");
+            m = s.rfind("--");
         }
     }
-
+    //Addition recursion
     for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '+') {
             string s1 = Calculate(s.substr(0, i), names, values, n);
@@ -68,6 +82,7 @@ string Calculate(string s, string names[], string values[], int n) {
             }
         }
     }
+    //Subtraction recursion
     for (int i = s.length() - 1; i >= 0; --i) {
         if (s[i] == '-') {
             if (s[i - 1] != '*' && s[i - 1] != '/') {
@@ -81,6 +96,7 @@ string Calculate(string s, string names[], string values[], int n) {
             }
         }
     }
+    //Multiplication recursion
     for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '*') {
             string s1 = Calculate(s.substr(0, i), names, values, n);
@@ -92,6 +108,7 @@ string Calculate(string s, string names[], string values[], int n) {
             }
         }
     }
+    //Division recursion
     for (int i = s.length() - 1; i >= 0; --i) {
         if (s[i] == '/') {
             string s1 = Calculate(s.substr(0, i), names, values, n);
@@ -103,12 +120,23 @@ string Calculate(string s, string names[], string values[], int n) {
             }
         }
     }
+    //return variable value
     for (int i = 0; i < n; ++i) {
         if (s == names[i]) {
             return values[i];
         }
     }
-    if (IsValid(s)) {
+    //return function value
+    for (int i = 0; i < kFunctions->length(); ++i) {
+        int m = s.find(kFunctions[i]);
+        if (m == 0) {
+            if (kFunctions[i] == "sqrt") {
+                return sqrt(s.substr(kFunctions[i].length()));
+            }
+        }
+    }
+    //validity judgment and return
+    if (IsValidValue(s)) {
         return s;
     } else {
         return "E";

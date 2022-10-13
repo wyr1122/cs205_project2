@@ -32,14 +32,29 @@ int main() {
                 string name;
                 string value;
                 name = str.substr(0, m);
+                if (!IsValidVariableName(name)) {
+                    cout << "name """ << name << """ is invalid" << endl;
+                    getline(cin, str);
+                    continue;
+                }
                 value = Calculate(str.substr(m + 1), {}, {}, 0);
                 if (value[0] == 'E' || value.empty()) {
                     cout << "invalid expression" << endl;
                 } else {
+                    for (int i = 0; i < kFunctions->length(); ++i) {
+                        if (name == kFunctions[i]) {
+                            cout << "name """ << name << """ is occupied" << endl;
+                            change = true;
+                            break;
+                        }
+                    }
+                    if (change) {
+                        break;
+                    }
                     for (int i = 0; i < cnt; ++i) {
                         if (name == names[i]) {
                             values[i] = value;
-                            cout << "variable " << names[i] << " changed to " << value << " successfully (" << cnt
+                            cout << "variable """ << names[i] << """ changed to " << value << " successfully (" << cnt
                                  << "/"
                                  << kVariableNum - 1
                                  << ")"
@@ -51,7 +66,7 @@ int main() {
                     if (!change) {
                         names[cnt] = name;
                         values[cnt] = value;
-                        cout << "variable " << names[cnt] << " defined as " << value << " successfully (" << ++cnt
+                        cout << "variable """ << names[cnt] << """ defined as " << value << " successfully (" << ++cnt
                              << "/"
                              << kVariableNum - 1
                              << ")"

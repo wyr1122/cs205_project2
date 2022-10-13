@@ -9,6 +9,11 @@
 
 using namespace std;
 const int kVariableNum = 51;
+const string kFunctions[kVariableNum] = {
+        string("sqrt")
+};
 
 string Calculate(string, string[], string [], int n);
+
+bool IsValidVariableName(string);
 
