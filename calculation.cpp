@@ -17,7 +17,7 @@ bool IsValid(string &s) {
     return true;
 }
 
-string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char value[kVariableNum][kLineLimit], int n) {
+string Calculate(string s, string names[], string values[], int n) {
     s.erase(0, s.find_first_not_of(" "));
     s.erase(s.find_last_not_of(" ") + 1);
     if (s.empty()) {
@@ -37,7 +37,7 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
             }
             if (s[i] == ')') {
                 cnt = 0;
-                s.replace(left, i - left + 1, Calculate(s.substr(left + 1, i - left - 1), name, value, n));
+                s.replace(left, i - left + 1, Calculate(s.substr(left + 1, i - left - 1), names, values, n));
             }
         } else {
             if (s[i] == ')') {
@@ -59,8 +59,8 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
 
     for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '+') {
-            string s1 = Calculate(s.substr(0, i), name, value, n);
-            string s2 = Calculate(s.substr(i + 1), name, value, n);
+            string s1 = Calculate(s.substr(0, i), names, values, n);
+            string s2 = Calculate(s.substr(i + 1), names, values, n);
             if (s1[0] == 'E' || s2[0] == 'E' || s1.empty() || s2.empty()) {
                 return "E";
             } else {
@@ -71,8 +71,8 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
     for (int i = s.length() - 1; i >= 0; --i) {
         if (s[i] == '-') {
             if (s[i - 1] != '*' && s[i - 1] != '/') {
-                string s1 = Calculate(s.substr(0, i), name, value, n);
-                string s2 = Calculate(s.substr(i + 1), name, value, n);
+                string s1 = Calculate(s.substr(0, i), names, values, n);
+                string s2 = Calculate(s.substr(i + 1), names, values, n);
                 if (s1[0] == 'E' || s2[0] == 'E' || s2.empty()) {
                     return "E";
                 } else {
@@ -83,8 +83,8 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
     }
     for (int i = 0; i < s.length(); ++i) {
         if (s[i] == '*') {
-            string s1 = Calculate(s.substr(0, i), name, value, n);
-            string s2 = Calculate(s.substr(i + 1), name, value, n);
+            string s1 = Calculate(s.substr(0, i), names, values, n);
+            string s2 = Calculate(s.substr(i + 1), names, values, n);
             if (s1[0] == 'E' || s2[0] == 'E' || s1.empty() || s2.empty()) {
                 return "E";
             } else {
@@ -94,8 +94,8 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
     }
     for (int i = s.length() - 1; i >= 0; --i) {
         if (s[i] == '/') {
-            string s1 = Calculate(s.substr(0, i), name, value, n);
-            string s2 = Calculate(s.substr(i + 1), name, value, n);
+            string s1 = Calculate(s.substr(0, i), names, values, n);
+            string s2 = Calculate(s.substr(i + 1), names, values, n);
             if (s1[0] == 'E' || s2[0] == 'E' || s1.empty() || s2.empty()) {
                 return "E";
             } else {
@@ -104,8 +104,8 @@ string Calculate(string s, char name[kVariableNum][kVariableNameLimit], char val
         }
     }
     for (int i = 0; i < n; ++i) {
-        if (std::equal(s.begin(), s.end(), name[i])) {
-            return value[i];
+        if (s == names[i]) {
+            return values[i];
         }
     }
     if (IsValid(s)) {
