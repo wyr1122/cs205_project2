@@ -16,3 +16,5 @@ string Pls(string, string);
 string Mns(string, string);
 
 string Div(string, string);
+
+string Sqrt(string s);

@@ -209,6 +209,30 @@ string IntMul(string a, string b) {
     return c;
 }
 
+string MulForSqrt(string a, string b) {
+    ReverseStr(a);
+    ReverseStr(b);
+    int an = ToIntStr(a);
+    int bn = ToIntStr(b);
+    if (IsZero(a) || IsZero(b)) {
+        return "0";
+    }
+    int cn = an + bn;
+    string c = IntMul(a, b);
+
+    int cl = 0;
+    for (int i = c.length() - 1; i >= 0; --i) {
+        if (c[i] != '0') {
+            cl = i + 1;
+            break;
+        }
+    }
+    c = c.substr(0, cl);
+    ReverseStr(c);
+    AddPoint(c, cl, cn);
+    return c;
+}
+
 string IntDiv(string b, string a) {
     int len = 1;
     string remainder;
@@ -365,6 +389,9 @@ string Div(string a, string b) {
     be += bn;
     bn += ToIntStr(b);
     be -= bn;
+    if (an > bn) {
+        bn = an;
+    }
     int cn = bn;
     int ce = ae - be;
     if (IsZero(b)) {
@@ -400,4 +427,51 @@ string Div(string a, string b) {
     } else {
         return c;
     }
+}
+
+string Sqrt(string s) {
+    int sl = s.length();
+    string min = "0";
+    string max;
+    string mid;
+    if (s[0] == '-') {
+        return "E";
+    } else if (s[0] == '0') {
+        max = "1";
+    } else {
+        max = s;
+    }
+    int sn = 1;
+    for (int i = sl - 1; i >= 0; --i) {
+        if (s[i] == '.') {
+            sn = sl - i - 1;
+            break;
+        }
+    }
+    string two = "2.";
+    two.append(sn + 1, '0');
+    while (true) {
+        mid = Div(Pls(min, max), two);
+        string square = MulForSqrt(mid, mid);
+        if (Mns(mid, min) == "0") {
+            break;
+        } else if (Mns(square, s)[0] == '-') {
+            min = mid;
+        } else {
+            max = mid;
+        }
+    }
+    int rn = 0;
+    for (int i = mid.length() - 1; i >= 0; --i) {
+        if (s[i] == '.') {
+            rn = mid.length() - i - 1;
+            break;
+        }
+    }
+    if (sn == 0 && rn == 1) {
+        mid.erase(mid.length() - 2);
+    } else if (rn == sn + 1) {
+        mid.erase(mid.length() - 1);
+    }
+    return mid;
 }

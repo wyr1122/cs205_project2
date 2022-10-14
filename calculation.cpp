@@ -9,8 +9,17 @@ using namespace std;
 
 //validity judgment has a lot of room for improvement
 bool IsValidValue(string s) {
+    int pointCnt = 0;
+    int eCnt = 0;
     for (char i: s) {
         if (i > '9' && i != 'e' || i < '0' && i != '.' && i != '-') {
+            return false;
+        } else if (i == '.') {
+            pointCnt++;
+        } else if (i == 'e') {
+            eCnt++;
+        }
+        if (pointCnt > 1 || eCnt > 1) {
             return false;
         }
     }
@@ -26,9 +35,6 @@ bool IsValidVariableName(string s) {
     return true;
 }
 
-string sqrt(string s) {
-    return s;
-}
 
 string Calculate(string s, string names[], string values[], int n) {
     s.erase(0, s.find_first_not_of(" "));
@@ -126,12 +132,12 @@ string Calculate(string s, string names[], string values[], int n) {
             return values[i];
         }
     }
-    //return function value
+    //return function value (calculate one-parameter function here)
     for (int i = 0; i < kFunctions->length(); ++i) {
         int m = s.find(kFunctions[i]);
         if (m == 0) {
             if (kFunctions[i] == "sqrt") {
-                return sqrt(s.substr(kFunctions[i].length()));
+                return Sqrt(Calculate(s.substr(kFunctions[i].length()), names, values, n));
             }
         }
     }
