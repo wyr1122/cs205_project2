@@ -4,7 +4,6 @@
 
 #include <string>
 #include <iostream>
-#include <cstring>
 #include "arithmetic.h"
 #include "calculation.h"
 
@@ -32,6 +31,8 @@ int main() {
                 string name;
                 string value;
                 name = str.substr(0, m);
+                name.erase(0, name.find_first_not_of(" "));
+                name.erase(name.find_last_not_of(" ") + 1);
                 if (!IsValidVariableName(name)) {
                     cout << "name """ << name << """ is invalid" << endl;
                     getline(cin, str);
@@ -49,7 +50,8 @@ int main() {
                         }
                     }
                     if (change) {
-                        break;
+                        getline(cin, str);
+                        continue;
                     }
                     for (int i = 0; i < cnt; ++i) {
                         if (name == names[i]) {
