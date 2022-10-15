@@ -435,6 +435,9 @@ string Div(string a, string b) {
         ce = 0;
     }
     AddPoint(c, cl, cn, false);
+    if (a_neg && !b_neg || !a_neg && b_neg) {
+        c.insert(0, "-");
+    }
     if (ce != 0) {
         return c + "e" + to_string(ce);
     } else {

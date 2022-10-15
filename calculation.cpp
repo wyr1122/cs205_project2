@@ -95,7 +95,7 @@ string Calculate(string s, string names[], string values[], int n) {
     //Subtraction recursion
     for (int i = s.length() - 1; i >= 0; --i) {
         if (s[i] == '-') {
-            if (s[i - 1] != '*' && s[i - 1] != '/' && s[i - 1] != 'e') {
+            if (s[i - 1] != '*' && s[i - 1] != '/' && s[i - 1] != 'e' && s[i - 1] != 't') {
                 string s1 = Calculate(s.substr(0, i), names, values, n);
                 string s2 = Calculate(s.substr(i + 1), names, values, n);
                 if (s1[0] == 'E' || s2[0] == 'E' || s2.empty()) {
@@ -137,11 +137,15 @@ string Calculate(string s, string names[], string values[], int n) {
         }
     }
     //return function value (calculate one-parameter function here)
-    for (int i = 0; i < kFunctions->length(); ++i) {
+    for (int i = 0; i < kFunctionNum; ++i) {
         int m = s.find(kFunctions[i]);
         if (m == 0) {
+            string input = Calculate(s.substr(kFunctions[i].length()), names, values, n);
+            if (input == "E") {
+                return "E";
+            }
             if (kFunctions[i] == "sqrt") {
-                return Sqrt(Calculate(s.substr(kFunctions[i].length()), names, values, n));
+                return Sqrt(input);
             }
         }
     }

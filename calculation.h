@@ -9,7 +9,8 @@
 
 using namespace std;
 const int kVariableNum = 51;
-const string kFunctions[kVariableNum] = {
+const int kFunctionNum = 1;
+const string kFunctions[kFunctionNum] = {
         string("sqrt")
 };
 
