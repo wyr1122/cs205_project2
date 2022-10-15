@@ -407,7 +407,7 @@ string Div(string a, string b) {
     int bn = ToIntStr(b);
     be -= bn;
     precision += bn;
-    int cn = an + precision;
+    int cn = an + bn + precision;
     int ce = ae - be;
     if (IsZero(b)) {
         return "E";
@@ -415,7 +415,7 @@ string Div(string a, string b) {
         return "0";
     }
     ReverseStr(a);
-    a.append(precision, '0');
+    a.append(bn + precision, '0');
     ReverseStr(b);
     string c = IntDiv(a, b);
     int cl = 0;
