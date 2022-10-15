@@ -41,7 +41,7 @@ int DealWithE(string &a) {
     }
 }
 
-void AddPoint(string &c, int cl, int cn) {
+void AddPoint(string &c, int cl, int cn, bool removeZeros) {
     if (cn > 0) {
         if (cl - cn > 0) {
             c = c.insert(cl - cn, ".");
@@ -56,14 +56,16 @@ void AddPoint(string &c, int cl, int cn) {
             }
             c = bw + c;
         }
-        for (int i = c.length() - 1; i >= 0; --i) {
-            if (c[i] == '0') {
-                c.erase(i, 1);
-            } else if (c[i] == '.') {
-                c = c.substr(0, i);
-                break;
-            } else {
-                break;
+        if (removeZeros) {
+            for (int i = c.length() - 1; i >= 0; --i) {
+                if (c[i] == '0') {
+                    c.erase(i, 1);
+                } else if (c[i] == '.') {
+                    c = c.substr(0, i);
+                    break;
+                } else {
+                    break;
+                }
             }
         }
     } else if (cn < 0) {
@@ -229,21 +231,21 @@ string MulForSqrt(string a, string b) {
     }
     c = c.substr(0, cl);
     ReverseStr(c);
-    AddPoint(c, cl, cn);
+    AddPoint(c, cl, cn, true);
     return c;
 }
 
-string IntDiv(string b, string a) {
+string IntDiv(string a, string b) {
     int len = 1;
     string remainder;
     string result = string("");
-    while (len <= b.length()) {
+    while (len <= a.length()) {
         int bit = 0;
         for (int i = 0; i < 10; ++i) {
-            remainder = MnsForDiv(b.substr(0, len), a);
+            remainder = MnsForDiv(a.substr(0, len), b);
             if (!remainder.empty()) {
                 bit++;
-                b.replace(0, len, remainder);
+                a.replace(0, len, remainder);
                 len = remainder.length();
             } else {
                 len++;
@@ -266,9 +268,14 @@ string Pls(string a, string b) {
         a.erase(al - 1, 1);
     if (bNeg)
         b.erase(bl - 1, 1);
+    int ae = DealWithE(a);
+    int be = DealWithE(b);
+    int ce = 0;
     int an = ToIntStr(a);
     int bn = ToIntStr(b);
-    int n = max(an, bn);
+    an -= ae;
+    bn -= be;
+    int cn = max(an, bn);
     Align(a, b, an, bn);
     bool neg = false;
     string c;
@@ -296,11 +303,22 @@ string Pls(string a, string b) {
     }
     c = c.substr(0, cl);
     ReverseStr(c);
-    AddPoint(c, cl, n);
+    if (cn - cl - ce > 5 || cl - cn + ce > 5) {
+        ce += cl - cn - 1;
+        cn = cl - 1;
+    } else {
+        cn -= ce;
+        ce = 0;
+    }
+    AddPoint(c, cl, cn, true);
     if (neg) {
         c.insert(0, "-");
     }
-    return c;
+    if (ce != 0) {
+        return c + "e" + to_string(ce);
+    } else {
+        return c;
+    }
 }
 
 string Mns(string a, string b) {
@@ -348,7 +366,7 @@ string Mul(string a, string b) {
         cn -= ce;
         ce = 0;
     }
-    AddPoint(c, cl, cn);
+    AddPoint(c, cl, cn, true);
     if (a_neg && !b_neg || !a_neg && b_neg) {
         c.insert(0, "-");
     }
@@ -374,11 +392,11 @@ string Div(string a, string b) {
     int ae = DealWithE(a);
     int be = DealWithE(b);
     int an = ToIntStr(a);
-    int bn = 0;
+    int precision = 0;
     while (!b.empty()) {
         if (b[0] == '0') {
             b.erase(0, 1);
-            bn++;
+            precision++;
         } else if (b[0] == '.') {
             b.erase(0, 1);
             break;
@@ -386,13 +404,10 @@ string Div(string a, string b) {
             break;
         }
     }
-    be += bn;
-    bn += ToIntStr(b);
+    int bn = ToIntStr(b);
     be -= bn;
-    if (an > bn) {
-        bn = an;
-    }
-    int cn = bn;
+    precision += bn;
+    int cn = an + precision;
     int ce = ae - be;
     if (IsZero(b)) {
         return "E";
@@ -400,9 +415,7 @@ string Div(string a, string b) {
         return "0";
     }
     ReverseStr(a);
-    if (an < bn) {
-        a.append(bn - an, '0');
-    }
+    a.append(precision, '0');
     ReverseStr(b);
     string c = IntDiv(a, b);
     int cl = 0;
@@ -421,7 +434,7 @@ string Div(string a, string b) {
         cn -= ce;
         ce = 0;
     }
-    AddPoint(c, cl, cn);
+    AddPoint(c, cl, cn, false);
     if (ce != 0) {
         return c + "e" + to_string(ce);
     } else {
@@ -436,22 +449,24 @@ string Sqrt(string s) {
     string mid;
     if (s[0] == '-') {
         return "E";
+    } else if (IsZero(s)) {
+        return "0";
     } else if (s[0] == '0') {
         max = "1";
     } else {
         max = s;
     }
-    int sn = 1;
+    int sn = 0;
     for (int i = sl - 1; i >= 0; --i) {
         if (s[i] == '.') {
             sn = sl - i - 1;
             break;
         }
     }
-    string two = "2.";
-    two.append(sn + 1, '0');
+    string two = "2.0";
+    two.append(sn, '0');
     while (true) {
-        mid = Div(Pls(min, max), two);
+        mid = Div(Pls(min, max), two).substr(0, mid.find('.') + 2 + sn);
         string square = MulForSqrt(mid, mid);
         if (Mns(mid, min) == "0") {
             break;
@@ -463,7 +478,7 @@ string Sqrt(string s) {
     }
     int rn = 0;
     for (int i = mid.length() - 1; i >= 0; --i) {
-        if (s[i] == '.') {
+        if (mid[i] == '.') {
             rn = mid.length() - i - 1;
             break;
         }

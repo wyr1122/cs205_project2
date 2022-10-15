@@ -47,26 +47,27 @@ string Calculate(string s, string names[], string values[], int n) {
     }
     //Matching parentheses recursion
     int left;
-    int cnt = 0;
-    for (int i = 0; i < s.length(); ++i) {
-        if (cnt == 0) {
-            if (s[i] == '(') {
-                cnt = 1;
-                left = i;
-            }
-        } else if (cnt == 1) {
+    int bracket = s.find('(');
+    while (bracket != string::npos) {
+        int cnt = 1;
+        left = bracket;
+        for (int i = bracket + 1; i < s.length(); ++i) {
             if (s[i] == '(') {
                 cnt++;
-            }
-            if (s[i] == ')') {
-                cnt = 0;
-                s.replace(left, i - left + 1, Calculate(s.substr(left + 1, i - left - 1), names, values, n));
-            }
-        } else {
-            if (s[i] == ')') {
-                cnt--;
+            } else if (s[i] == ')') {
+                if (cnt == 1) {
+                    cnt = 0;
+                    s.replace(left, i - left + 1, Calculate(s.substr(left + 1, i - left - 1), names, values, n));
+                    break;
+                } else {
+                    cnt--;
+                }
             }
         }
+        if (cnt != 0) {
+            return "E";
+        }
+        bracket = s.find('(');
     }
     //Deal with minus
     int m = s.rfind("--");
