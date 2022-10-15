@@ -37,8 +37,11 @@ bool IsValidVariableName(string s) {
 
 
 string Calculate(string s, string names[], string values[], int n) {
-    s.erase(0, s.find_first_not_of(" "));
-    s.erase(s.find_last_not_of(" ") + 1);
+    int space = s.find(' ');
+    while (space != string::npos) {
+        s.erase(space, 1);
+        space = s.find(' ');
+    }
     if (s.empty()) {
         return s;
     }
@@ -91,7 +94,7 @@ string Calculate(string s, string names[], string values[], int n) {
     //Subtraction recursion
     for (int i = s.length() - 1; i >= 0; --i) {
         if (s[i] == '-') {
-            if (s[i - 1] != '*' && s[i - 1] != '/') {
+            if (s[i - 1] != '*' && s[i - 1] != '/' && s[i - 1] != 'e') {
                 string s1 = Calculate(s.substr(0, i), names, values, n);
                 string s2 = Calculate(s.substr(i + 1), names, values, n);
                 if (s1[0] == 'E' || s2[0] == 'E' || s2.empty()) {
