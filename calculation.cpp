@@ -130,12 +130,6 @@ string Calculate(string s, string names[], string values[], int n) {
             }
         }
     }
-    //return variable value
-    for (int i = 0; i < n; ++i) {
-        if (s == names[i]) {
-            return values[i];
-        }
-    }
     //return function value (calculate one-parameter function here)
     for (int i = 0; i < kFunctionNum; ++i) {
         int m = s.find(kFunctions[i]);
@@ -147,6 +141,12 @@ string Calculate(string s, string names[], string values[], int n) {
             if (kFunctions[i] == "sqrt") {
                 return Sqrt(input);
             }
+        }
+    }
+    //return variable value
+    for (int i = 0; i < n; ++i) {
+        if (s == names[i]) {
+            return values[i];
         }
     }
     //validity judgment and return
