@@ -94,14 +94,25 @@ string Calculate(string s, string names[], string values[], int n) {
     }
     //Subtraction recursion
     for (int i = s.length() - 1; i >= 0; --i) {
+        bool neg_sign = false;
         if (s[i] == '-') {
-            if (s[i - 1] != '*' && s[i - 1] != '/' && s[i - 1] != 'e' && s[i - 1] != 't') {
-                string s1 = Calculate(s.substr(0, i), names, values, n);
-                string s2 = Calculate(s.substr(i + 1), names, values, n);
-                if (s1[0] == 'E' || s2[0] == 'E' || s2.empty()) {
-                    return "E";
-                } else {
-                    return Mns(s1, s2);
+            if (s[i - 1] != '*' && s[i - 1] != '/' && s[i - 1] != 'e') {
+                for (int j = 0; j < kFunctionNum; ++j) {
+                    int begin = i - kFunctions[j].length();
+                    if (begin < 0) {
+                        continue;
+                    } else if (s.substr(begin, kFunctions[j].length()) == kFunctions[j]) {
+                        neg_sign = true;
+                    }
+                }
+                if (!neg_sign) {
+                    string s1 = Calculate(s.substr(0, i), names, values, n);
+                    string s2 = Calculate(s.substr(i + 1), names, values, n);
+                    if (s1[0] == 'E' || s2[0] == 'E' || s2.empty()) {
+                        return "E";
+                    } else {
+                        return Mns(s1, s2);
+                    }
                 }
             }
         }
