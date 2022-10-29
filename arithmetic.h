@@ -5,7 +5,6 @@
 #ifndef PROJECT2_ARITHMETIC_H
 #define PROJECT2_ARITHMETIC_H
 
-#endif //PROJECT2_ARITHMETIC_H
 
 using namespace std;
 
@@ -18,3 +17,5 @@ string Mns(string, string);
 string Div(string, string);
 
 string Sqrt(string s);
+
+#endif //PROJECT2_ARITHMETIC_H
